@@ -9,14 +9,16 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
-  const [ErrorMsg,setErrorMsg] = useState("");
+  const [ErrorMsg, setErrorMsg] = useState("");
   const history = useHistory();
   const handleButtonClick = () => {
     let errorTxt = checkLoginDetails();
-    if(errorTxt !== "") return;
+    if (errorTxt !== "") return;
     axios
       .get("/user/login?Email=" + email + "&Password=" + password + "")
       .then((response) => {
+        history.push("/" + response.data.userType);
+
         console.log(response);
       })
       .catch((error) => {
@@ -27,35 +29,37 @@ const LoginPage = () => {
   const handleSignin = () => {
     history.push("/Signin");
   };
-  const checkLoginDetails =()=>{
+  const checkLoginDetails = () => {
     let updatedErrorMsg = "";
-    if(email === "") {
+    if (email === "") {
       updatedErrorMsg += "Email FIELD IS MISSING!!";
-    }
-    else {
-      if(password === "") {
+    } else {
+      if (password === "") {
         updatedErrorMsg += "Password FIELD IS MISSING!!";
       }
     }
     setErrorMsg(updatedErrorMsg);
     return updatedErrorMsg;
-  }
-  const closeModal =()=>{
+  };
+  const closeModal = () => {
     setIsError(false);
-  }
-  
+  };
+
   console.log(isError);
   let ApiErrorMsg = isError && (
-      <ErrorDialog
-        open={isError}
-        ErrorTxt={"this Email Id already exists in database.Please use a different Email Id"}
-        ErrorTitle={"Error while Logging in!"}
-        handleDialogOk={closeModal}
-      />
+    <ErrorDialog
+      open={isError}
+      ErrorTxt={
+        "this Email Id already exists in database.Please use a different Email Id"
+      }
+      ErrorTitle={"Error while Logging in!"}
+      handleDialogOk={closeModal}
+    />
   );
   return (
     <>
-    {ApiErrorMsg}
+      {ApiErrorMsg}
+
       <div className="header">Welcome To Roommate Finder</div>
       <div className="content">
         <div className="loginDetails">
@@ -84,9 +88,13 @@ const LoginPage = () => {
             </Button>
           </div>
           <br></br>
-          <div>Forgot Password?</div><br></br>
-          <div>{"Don't have an account? "}
-            <span className="signinlink" onClick={handleSignin}>Sign In</span>
+          <div>Forgot Password?</div>
+          <br></br>
+          <div>
+            {"Don't have an account? "}
+            <span className="signinlink" onClick={handleSignin}>
+              Sign In
+            </span>
           </div>
         </div>
         <img className="loginPageImage" src={MyImage} alt=""></img>
