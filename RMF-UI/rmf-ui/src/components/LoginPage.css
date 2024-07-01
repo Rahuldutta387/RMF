@@ -24,5 +24,26 @@
 }
 
 .loginButton {
-  margin-top: 8px;
+  margin-top: 20px;
 }
+.formPlaceHolder {
+  width: 200px;
+  height: 20px;
+}
+
+.emailDetails {
+  padding: 15px;
+}
+.passwordDetails {
+  padding-bottom: 15px;
+}
+.loginDetails {
+  padding: 15px;
+}
+.signinlink {
+  color: blue;
+  cursor: pointer;
+}
+
+
+

@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import "./LoginPage.css";
+import "./SigninPage.css";
 import MyImage from "./images/loginImage.jpeg";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import ErrorDialog from "./ErrorDialog";
+
 const SigninPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [ErrorMsg,setErrorMsg] = useState("");
+  const [params,setParams] = useState({});
+  const signInDetails = {
+    email : "required",
+    password : "required",
+    name : "",
+    type: "required",
+  }
   const history = useHistory();
   var signinDetails = {
     Name: "",
@@ -17,6 +29,8 @@ const SigninPage = () => {
     UserType: "",
   };
   const handleButtonClick = () => {
+    let errorTxt = checkSigninDetails();
+    if(errorTxt !== "") return;
     signinDetails.Name = name;
     signinDetails.Password = password;
     signinDetails.Email = email;
@@ -37,12 +51,45 @@ const SigninPage = () => {
         console.log(response);
       })
       .catch((error) => {
+        setIsError(true);
         console.log(error);
       });
   };
 
+  const closeModal =()=>{
+    setIsError(false);
+  }
+
+  let ApiErrorMsg = isError && (
+      <ErrorDialog
+        open={isError}
+        ErrorTxt={"this Email Id already exists in database.Please use a different Email Id"}
+        ErrorTitle={"Error while Signing in!"}
+        handleDialogOk={closeModal}
+      />
+  );
+
+  const checkSigninDetails =()=>{
+    let updatedErrorMsg = "";
+    Object.keys(signInDetails).forEach(key => {
+      if(signInDetails[key] === "required" && (params[key] === "" || params[key] === undefined)) {
+        updatedErrorMsg+= `${key} FIELD IS MISSING!!`;
+      }
+    });
+    console.log(updatedErrorMsg);
+    setErrorMsg(updatedErrorMsg);
+    return updatedErrorMsg;
+  }
+
+  function setPlaceholderValue (value,parameter) {
+    let updatedParams = {...params};
+    updatedParams[parameter] = value;
+    setParams(updatedParams)
+  }
+
+
   return (
-    <>
+    <>{ApiErrorMsg}
       <div className="rmf-icon">
         <span className="rmf">RMF</span>
         <span className="login">Sign In</span>
@@ -51,41 +98,42 @@ const SigninPage = () => {
       <div className="content">
         <div className="loginDetails">
           <div className="nameDetails">
-            <label className="formLabel">Name</label>
+            <label className="formLabel">Name : </label>
             <input
               type="text"
               className="formPlaceHolder"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {setName(e.target.value);setPlaceholderValue(e.target.value,name)}}
             ></input>
           </div>
           <div className="emailDetails">
-            <label className="formLabel">Email Id</label>
+            <label className="formLabel">Email Id : </label>
             <input
               type="text"
               className="formPlaceHolder"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {setEmail(e.target.value);setPlaceholderValue(e.target.value,email)}}
             ></input>
           </div>
           <div className="passwordDetails">
-            <label className="formLabel">Password</label>
+            <label className="formLabel">Password : </label>
             <input
               type="password"
               className="formPlaceHolder"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {setPassword(e.target.value);setPlaceholderValue(e.target.value,password)}}
             ></input>
           </div>
           <div className="userTypeDetails">
-            <label className="formLabel">Type</label>
+            <label className="formLabel">Type : </label>
             <input
               type="text"
               className="formPlaceHolder"
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => {setType(e.target.value);setPlaceholderValue(e.target.value,type)}}
             ></input>
           </div>
+          <div className="errorMsg">{ErrorMsg}</div>
           <div className="loginButton">
             <Button variant="contained" onClick={handleButtonClick}>
               Signin
