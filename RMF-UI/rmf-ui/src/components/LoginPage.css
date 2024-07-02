@@ -1,0 +1,49 @@
+.header {
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell,
+    "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 56px;
+  font-weight: 200;
+  color: #b24020;
+  padding-right: 42px;
+  width: 55%;
+}
+.loginPageImage {
+  width: 500px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 47rem 15fr;
+}
+.formLabel {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.loginButton {
+  margin-top: 20px;
+}
+.formPlaceHolder {
+  width: 200px;
+  height: 20px;
+}
+
+.emailDetails {
+  padding: 15px;
+}
+.passwordDetails {
+  padding-bottom: 15px;
+}
+.loginDetails {
+  padding: 15px;
+}
+.signinlink {
+  color: blue;
+  cursor: pointer;
+}
+
+
+

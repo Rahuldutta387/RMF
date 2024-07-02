@@ -6,6 +6,25 @@
   height: 40vmin;
   pointer-events: none;
 }
+.rmf-icon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #0074d9;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.login {
+  margin-left: auto;
+}
+.rmf {
+  margin-right: auto;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

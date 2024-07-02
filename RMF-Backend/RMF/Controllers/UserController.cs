@@ -19,10 +19,20 @@ namespace RMF.Controllers
 
         [HttpGet]
         [Route("user/getEmail")]
-        public List<User> GetValue()
+        public List<AdminDetail> GetValue()
         {
             
-            var ans = this.dBSet.ToList();
+            var users = this.dBSet.ToList();
+            var ans = new List<AdminDetail>();
+            
+            foreach (var user in users)
+            {
+                var detail = new AdminDetail();
+                detail.Name = user.Name;
+                detail.UserType = user.UserType;
+                detail.Email = user.Email;
+                ans.Add(detail);
+            }
             
             return ans;
         }
@@ -48,9 +58,27 @@ namespace RMF.Controllers
         [Route("user/signUp")]
         public async Task<IActionResult> PostUser(User user)
         {
+            if (this.dBSet.Find(user.Email) != null)
+            {
+                return BadRequest("Email Already Exist");
+            }
             this.dBSet.Add(user);
             await this.database.SaveChangesAsync();
             return Ok(user);
+        }
+        [HttpDelete]
+        [Route("user/delete")]
+        public async Task<IActionResult> DeleteUser(string email)
+        {
+            var user = await this.dBSet.FindAsync(email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            this.dBSet.Remove(user);
+            await this.database.SaveChangesAsync();
+            return Ok();
+
         }
     }
 }
