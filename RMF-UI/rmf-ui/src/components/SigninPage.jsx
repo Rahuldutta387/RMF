@@ -4,8 +4,8 @@ import "./SigninPage.css";
 import MyImage from "./images/loginImage.jpeg";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import ErrorDialog from "./ErrorDialog";
+import ErrorDialog from "./shared/ErrorDialog";
+import Loader from "./shared/Loader";
 
 const SigninPage = () => {
   const [email, setEmail] = useState("");
@@ -15,13 +15,14 @@ const SigninPage = () => {
   const [isError, setIsError] = useState(false);
   const [ErrorMsg,setErrorMsg] = useState("");
   const [params,setParams] = useState({});
+  const [isLoader,setIsLoader] = useState(false);
   const signInDetails = {
+    name : "required",
     email : "required",
     password : "required",
-    name : "",
     type: "required",
   }
-  const history = useHistory();
+  
   var signinDetails = {
     Name: "",
     Email: "",
@@ -31,6 +32,7 @@ const SigninPage = () => {
   const handleButtonClick = () => {
     let errorTxt = checkSigninDetails();
     if(errorTxt !== "") return;
+    setIsLoader(true);
     signinDetails.Name = name;
     signinDetails.Password = password;
     signinDetails.Email = email;
@@ -48,10 +50,12 @@ const SigninPage = () => {
           ""
       )
       .then((response) => {
+        setIsLoader(false);
         console.log(response);
       })
       .catch((error) => {
         setIsError(true);
+        setIsLoader(false);
         console.log(error);
       });
   };
@@ -76,7 +80,7 @@ const SigninPage = () => {
         updatedErrorMsg+= `${key} FIELD IS MISSING!!`;
       }
     });
-    console.log(updatedErrorMsg);
+    
     setErrorMsg(updatedErrorMsg);
     return updatedErrorMsg;
   }
@@ -84,12 +88,14 @@ const SigninPage = () => {
   function setPlaceholderValue (value,parameter) {
     let updatedParams = {...params};
     updatedParams[parameter] = value;
-    setParams(updatedParams)
+    setParams(updatedParams);
   }
 
-
+  let loader = <Loader></Loader>
   return (
-    <>{ApiErrorMsg}
+  <>
+    {isLoader ? loader :
+    (<>{ApiErrorMsg}
       <div className="rmf-icon">
         <span className="rmf">RMF</span>
         <span className="login">Sign In</span>
@@ -103,7 +109,7 @@ const SigninPage = () => {
               type="text"
               className="formPlaceHolder"
               value={name}
-              onChange={(e) => {setName(e.target.value);setPlaceholderValue(e.target.value,name)}}
+              onChange={(e) => {setName(e.target.value);setPlaceholderValue(e.target.value,"name")}}
             ></input>
           </div>
           <div className="emailDetails">
@@ -112,7 +118,7 @@ const SigninPage = () => {
               type="text"
               className="formPlaceHolder"
               value={email}
-              onChange={(e) => {setEmail(e.target.value);setPlaceholderValue(e.target.value,email)}}
+              onChange={(e) => {setEmail(e.target.value);setPlaceholderValue(e.target.value,"email")}}
             ></input>
           </div>
           <div className="passwordDetails">
@@ -121,7 +127,7 @@ const SigninPage = () => {
               type="password"
               className="formPlaceHolder"
               value={password}
-              onChange={(e) => {setPassword(e.target.value);setPlaceholderValue(e.target.value,password)}}
+              onChange={(e) => {setPassword(e.target.value);setPlaceholderValue(e.target.value,"password")}}
             ></input>
           </div>
           <div className="userTypeDetails">
@@ -130,7 +136,7 @@ const SigninPage = () => {
               type="text"
               className="formPlaceHolder"
               value={type}
-              onChange={(e) => {setType(e.target.value);setPlaceholderValue(e.target.value,type)}}
+              onChange={(e) => {setType(e.target.value);setPlaceholderValue(e.target.value,"type")}}
             ></input>
           </div>
           <div className="errorMsg">{ErrorMsg}</div>
@@ -142,6 +148,7 @@ const SigninPage = () => {
         </div>
         <img className="loginPageImage" src={MyImage} alt=""></img>
       </div>
+    </>)}
     </>
   );
 };

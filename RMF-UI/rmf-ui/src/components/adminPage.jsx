@@ -32,7 +32,7 @@ const AdminPage = () => {
   }
   let loader = (
     <>
-      <Loader visible={true}></Loader>
+      <Loader></Loader>
     </>
   );
   return (

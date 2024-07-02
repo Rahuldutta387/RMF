@@ -4,7 +4,7 @@ import MyImage from "./images/loginImage.jpeg";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import ErrorDialog from "./ErrorDialog";
+import ErrorDialog from "./shared/ErrorDialog.jsx";
 import Loader from "../components/shared/Loader.jsx";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -62,15 +62,15 @@ const LoginPage = () => {
   );
   let loader = (
     <>
-      <Loader visible={true}></Loader>
+      <Loader></Loader>
     </>
   );
   return (
     <>
       {isLoader
         ? loader
-        : { ApiErrorMsg }(
-            <>
+        : (
+            <>{ ApiErrorMsg }
               <div className="header">Welcome To Roommate Finder</div>
               <div className="content">
                 <div className="loginDetails">

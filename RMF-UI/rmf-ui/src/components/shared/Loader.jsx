@@ -1,10 +1,10 @@
 import * as React from "react";
 import { ColorRing } from "react-loader-spinner";
 
-export default function CircularIndeterminate(props) {
+export default function CircularIndeterminate() {
   return (
     <ColorRing
-      visible={props.visible}
+      visible={true}
       height="500"
       width="80"
       ariaLabel="color-ring-loading"
