@@ -5,24 +5,28 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import ErrorDialog from "./ErrorDialog";
+import Loader from "../components/shared/Loader.jsx";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setIsError] = useState(false);
   const [ErrorMsg, setErrorMsg] = useState("");
+  const [isLoader, setIsLoader] = useState(false);
   const history = useHistory();
   const handleButtonClick = () => {
     let errorTxt = checkLoginDetails();
     if (errorTxt !== "") return;
+    setIsLoader(true);
     axios
       .get("/user/login?Email=" + email + "&Password=" + password + "")
       .then((response) => {
         history.push("/" + response.data.userType);
-
+        setIsLoader(false);
         console.log(response);
       })
       .catch((error) => {
         setIsError(true);
+        setIsLoader(false);
         console.log(error);
       });
   };
@@ -56,49 +60,58 @@ const LoginPage = () => {
       handleDialogOk={closeModal}
     />
   );
+  let loader = (
+    <>
+      <Loader visible={true}></Loader>
+    </>
+  );
   return (
     <>
-      {ApiErrorMsg}
-
-      <div className="header">Welcome To Roommate Finder</div>
-      <div className="content">
-        <div className="loginDetails">
-          <div className="emailDetails">
-            <label className="formLabel">Email Id : </label>
-            <input
-              type="text"
-              className="formPlaceHolder"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></input>
-          </div>
-          <div className="passwordDetails">
-            <label className="formLabel">Password : </label>
-            <input
-              type="password"
-              className="formPlaceHolder"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></input>
-          </div>
-          <div className="errorMsg">{ErrorMsg}</div>
-          <div className="loginButton">
-            <Button variant="contained" onClick={handleButtonClick}>
-              Login
-            </Button>
-          </div>
-          <br></br>
-          <div>Forgot Password?</div>
-          <br></br>
-          <div>
-            {"Don't have an account? "}
-            <span className="signinlink" onClick={handleSignin}>
-              Sign In
-            </span>
-          </div>
-        </div>
-        <img className="loginPageImage" src={MyImage} alt=""></img>
-      </div>
+      {isLoader
+        ? loader
+        : { ApiErrorMsg }(
+            <>
+              <div className="header">Welcome To Roommate Finder</div>
+              <div className="content">
+                <div className="loginDetails">
+                  <div className="emailDetails">
+                    <label className="formLabel">Email Id : </label>
+                    <input
+                      type="text"
+                      className="formPlaceHolder"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    ></input>
+                  </div>
+                  <div className="passwordDetails">
+                    <label className="formLabel">Password : </label>
+                    <input
+                      type="password"
+                      className="formPlaceHolder"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    ></input>
+                  </div>
+                  <div className="errorMsg">{ErrorMsg}</div>
+                  <div className="loginButton">
+                    <Button variant="contained" onClick={handleButtonClick}>
+                      Login
+                    </Button>
+                  </div>
+                  <br></br>
+                  <div>Forgot Password?</div>
+                  <br></br>
+                  <div>
+                    {"Don't have an account? "}
+                    <span className="signinlink" onClick={handleSignin}>
+                      Sign In
+                    </span>
+                  </div>
+                </div>
+                <img className="loginPageImage" src={MyImage} alt=""></img>
+              </div>
+            </>
+          )}
     </>
   );
 };
