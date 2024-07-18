@@ -19,6 +19,10 @@ namespace RMF.Repositories
         {
             return _room.Find(x => true).ToList();
         }
+        public async Task<IEnumerable<TEntity>> GetLimitedRoomDetailsAsync(int skip, int limit)
+        {
+            return _room.Find(x => true).ToList().Skip(skip).Take(limit);
+        }
         public async Task<TEntity> CreateRoomDetailsAsync(TEntity roomDetails)
         {
             _room.InsertOne(roomDetails);

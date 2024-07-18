@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RMF.Dtos;
 using RMF.Models;
 using RMF.Services;
 
@@ -28,13 +29,14 @@ namespace RMF.Controllers
                 return BadRequest(ex);
             }
         }
+        
         [HttpGet]
         [Route("getRoomDetails")]
-        public async Task<IActionResult> GetRoomDetails()
+        public async Task<IActionResult> GetLimitedRoomDetails(int skip, int limit)
         {
             try
-            {
-                var rooms = await this.roomMateFinderManager.GetAllRoomDetailsAsync();
+            {              
+                var rooms = await this.roomMateFinderManager.GetLimitRoomDetailsAsync(skip, limit);
                 return Ok(rooms);
             }
             catch (Exception ex)

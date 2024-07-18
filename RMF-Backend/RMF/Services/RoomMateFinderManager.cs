@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Bson;
+using RMF.Dtos;
 using RMF.Models;
 using RMF.Repositories;
 
@@ -13,13 +14,14 @@ namespace RMF.Services
         {
             this.roomDetailsRepository = roomDetailsRepository;
         }
-        public Task<List<RoomDetails>> GetAllRoomDetailsAsync()
+        public Task<IEnumerable<RoomDetails>> GetLimitRoomDetailsAsync(int skip, int limit)
         {
-            var rooms = roomDetailsRepository.GetRoomDetailsAsync();
-            if (rooms.Result.Count == 0)
+            var rooms = roomDetailsRepository.GetLimitedRoomDetailsAsync(skip, limit); 
+            if (!rooms.Result.Any())
             {
                 throw new Exception("Room missing");
             }
+
             return rooms;
         }
         public Task<RoomDetails> CreateRoomDetailsAsync(RoomDetails roomDetails)
