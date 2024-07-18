@@ -1,0 +1,12 @@
+.mainPageTextContent {
+  margin-top: 10rem;
+  font-family: Garamond;
+  font-size: 50px;
+}
+
+/* Responsive adjustments (optional) */
+@media screen and (max-width: 600px) {
+  .content {
+    max-width: 100%;
+  }
+}

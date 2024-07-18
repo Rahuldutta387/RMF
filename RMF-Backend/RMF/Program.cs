@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RMF.DataDB;
+using RMF.Repositories;
+using RMF.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ builder.Services.AddDbContext<RmfContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddTransient<IRoomMateFinderManager, RoomMateFinderManager>();
 
 var app = builder.Build();
 

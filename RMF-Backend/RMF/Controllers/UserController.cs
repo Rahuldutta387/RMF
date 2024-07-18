@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using RMF.DataDB;
 using RMF.Models;
+using RMF.Services;
 
 namespace RMF.Controllers
 {
@@ -10,13 +13,14 @@ namespace RMF.Controllers
 
         public readonly RmfContext database;
         public readonly DbSet<User> dBSet;
+        public readonly IConfiguration configuration;
         public UserController(RmfContext database)
         {
             this.database = database;
             this.dBSet = this.database.Set<User>();
             this.database.Database.EnsureCreated();
         }
-
+        
         [HttpGet]
         [Route("user/getEmail")]
         public List<AdminDetail> GetValue()

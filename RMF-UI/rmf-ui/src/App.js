@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import SigninPage from "./components/SigninPage";
 import AdminPage from "./components/adminPage";
 import RMFPage from "./components/RMFPage";
+import PostRoomPage from "./components/PostRoomPage";
+import AllRoomsPage from "./components/AllRoomsPage";
 
 function App() {
   return (
@@ -21,6 +23,12 @@ function App() {
           </Route>
           <Route exact path="/rmf">
             <RMFPage></RMFPage>
+          </Route>
+          <Route exact path="/rmf/post_room">
+            <PostRoomPage></PostRoomPage>
+          </Route>
+          <Route exact path="/rmf/all_rooms">
+            <AllRoomsPage></AllRoomsPage>
           </Route>
         </Switch>
       </div>
