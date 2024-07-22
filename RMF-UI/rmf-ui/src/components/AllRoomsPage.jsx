@@ -2,20 +2,39 @@ import React, { useEffect, useState } from "react";
 import NavBarRMF from "./shared/NavBarRMF";
 import "./AllRoomPage.css";
 import axios from "axios";
+import Button from "@mui/material/Button";
 
 const AllRoomsPage = () => {
+  var tryVal = 0;
   const [roomList, setRoomList] = useState([]);
+  const [skip, setSkip] = useState(0);
+  const [isNext, setIsNext] = useState(false);
+  const [isPrev, setIsPrev] = useState(true);
   function getRoomList() {
     axios
-      .get("/api/RoomMateFinder/getRoomDetails")
+      .get("/api/RoomMateFinder/getRoomDetails?skip=" + skip + "&limit=10")
       .then((res) => {
-        setRoomList(res.data);
+        if (skip > 0) {
+          setIsPrev(false);
+        }
+        if (skip <= 0) {
+          setIsPrev(true);
+        }
+
+        setIsNext(!res.data.isNext);
+        setRoomList(res.data.roomDetails);
       })
       .catch((err) => {});
   }
   useEffect(() => {
     getRoomList();
-  }, []);
+  }, [skip]);
+  const handNextButton = () => {
+    setSkip((skip) => skip + 10);
+  };
+  const handlePrevButton = () => {
+    setSkip((skip) => skip - 10);
+  };
   return (
     <>
       <NavBarRMF></NavBarRMF>
@@ -44,6 +63,18 @@ const AllRoomsPage = () => {
             <p className="message">{res.requirement.message}</p>
           </div>
         ))}
+      </div>
+      <div className="buttonGroup">
+        <Button
+          variant="contained"
+          onClick={handlePrevButton}
+          disabled={isPrev}
+        >
+          Previous
+        </Button>
+        <Button variant="contained" onClick={handNextButton} disabled={isNext}>
+          Next
+        </Button>
       </div>
     </>
   );

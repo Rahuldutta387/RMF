@@ -14,6 +14,19 @@ namespace RMF.Services
         {
             this.roomDetailsRepository = roomDetailsRepository;
         }
+        public bool isNext(int skip)
+        {
+            var totalCount = GetRoomsCount();
+            if (totalCount.Result - skip <= 10)
+            {
+                return false;
+            }
+            return true;
+        }
+        public async Task<long> GetRoomsCount()
+        {
+            return await this.roomDetailsRepository.GetRoomsCount();
+        }
         public Task<IEnumerable<RoomDetails>> GetLimitRoomDetailsAsync(int skip, int limit)
         {
             var rooms = roomDetailsRepository.GetLimitedRoomDetailsAsync(skip, limit); 

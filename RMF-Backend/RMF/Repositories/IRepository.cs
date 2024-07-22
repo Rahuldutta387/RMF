@@ -6,5 +6,6 @@
         public Task<TEntity> CreateRoomDetailsAsync(TEntity roomDetails);
         public void CreateMultipleRoomDetailsAsync(IEnumerable<TEntity> entities);
         public  Task<IEnumerable<TEntity>> GetLimitedRoomDetailsAsync(int skip, int limit);
+        public Task<long> GetRoomsCount();
     }
 }

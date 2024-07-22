@@ -34,10 +34,14 @@ namespace RMF.Controllers
         [Route("getRoomDetails")]
         public async Task<IActionResult> GetLimitedRoomDetails(int skip, int limit)
         {
+            RoomDetailDto roomDetailDto = new RoomDetailDto();
             try
             {              
                 var rooms = await this.roomMateFinderManager.GetLimitRoomDetailsAsync(skip, limit);
-                return Ok(rooms);
+                roomDetailDto.RoomDetails = rooms;
+                var isNext = this.roomMateFinderManager.isNext(skip);
+                roomDetailDto.IsNext = isNext;
+                return Ok(roomDetailDto);
             }
             catch (Exception ex)
             {
