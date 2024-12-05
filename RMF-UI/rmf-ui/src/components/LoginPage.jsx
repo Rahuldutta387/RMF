@@ -22,12 +22,10 @@ const LoginPage = () => {
       .then((response) => {
         history.push("/" + response.data.userType);
         setIsLoader(false);
-        console.log(response);
       })
       .catch((error) => {
         setIsError(true);
         setIsLoader(false);
-        console.log(error);
       });
   };
   const handleSignin = () => {
@@ -49,7 +47,6 @@ const LoginPage = () => {
     setIsError(false);
   };
 
-  console.log(isError);
   let ApiErrorMsg = isError && (
     <ErrorDialog
       open={isError}
@@ -67,51 +64,52 @@ const LoginPage = () => {
   );
   return (
     <>
-      {isLoader
-        ? loader
-        : (
-            <>{ ApiErrorMsg }
-              <div className="header">Welcome To Roommate Finder</div>
-              <div className="content">
-                <div className="loginDetails">
-                  <div className="emailDetails">
-                    <label className="formLabel">Email Id : </label>
-                    <input
-                      type="text"
-                      className="formPlaceHolder"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    ></input>
-                  </div>
-                  <div className="passwordDetails">
-                    <label className="formLabel">Password : </label>
-                    <input
-                      type="password"
-                      className="formPlaceHolder"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    ></input>
-                  </div>
-                  <div className="errorMsg">{ErrorMsg}</div>
-                  <div className="loginButton">
-                    <Button variant="contained" onClick={handleButtonClick}>
-                      Login
-                    </Button>
-                  </div>
-                  <br></br>
-                  <div>Forgot Password?</div>
-                  <br></br>
-                  <div>
-                    {"Don't have an account? "}
-                    <span className="signinlink" onClick={handleSignin}>
-                      Sign In
-                    </span>
-                  </div>
-                </div>
-                <img className="loginPageImage" src={MyImage} alt=""></img>
+      {isLoader ? (
+        loader
+      ) : (
+        <>
+          {ApiErrorMsg}
+          <div className="header">Welcome To Roommate Finder</div>
+          <div className="content">
+            <div className="loginDetails">
+              <div className="emailDetails">
+                <label className="formLabel">Email Id : </label>
+                <input
+                  type="text"
+                  className="formPlaceHolder"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></input>
               </div>
-            </>
-          )}
+              <div className="passwordDetails">
+                <label className="formLabel">Password : </label>
+                <input
+                  type="password"
+                  className="formPlaceHolder"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></input>
+              </div>
+              <div className="errorMsg">{ErrorMsg}</div>
+              <div className="loginButton">
+                <Button variant="contained" onClick={handleButtonClick}>
+                  Login
+                </Button>
+              </div>
+              <br></br>
+              <div>Forgot Password?</div>
+              <br></br>
+              <div>
+                {"Don't have an account? "}
+                <span className="signinlink" onClick={handleSignin}>
+                  Sign In
+                </span>
+              </div>
+            </div>
+            <img className="loginPageImage" src={MyImage} alt=""></img>
+          </div>
+        </>
+      )}
     </>
   );
 };
